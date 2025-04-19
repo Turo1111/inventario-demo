@@ -188,7 +188,7 @@ export default function NewProductModal({ isOpen, onClose }: NewProductModalProp
           <Button type="button" variant="secondary" onClick={onClose}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={formik.handleSubmit}>
+          <Button type="button" variant="primary" onClick={(e)=>{e.preventDefault();formik.handleSubmit()}}>
             Guardar
           </Button>
         </ModalFooter>

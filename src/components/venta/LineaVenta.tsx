@@ -22,8 +22,8 @@ export default function LineaVenta() {
           <>
             <SelectedProductsList>
               {
-                itemSale.map((item: ExtendItemSale)=>(
-                    <ItemLineaVenta 
+                itemSale.map((item: ExtendItemSale, index: number)=>(
+                    <ItemLineaVenta key={index}
                         name={item.descripcion || 'Sin decripcion'} cantidad={item.cantidad} total={item.total}
                         downQTY={()=>dispatch(downQTYSale({id: item.idProducto}))}
                         downQTY10={()=>dispatch(downQTY10Sale({id: item.idProducto}))}

@@ -233,7 +233,7 @@ const lastElementRef = useCallback(
       });
       if (node) observer.current.observe(node);
   },
-  [loading, search, data.length, longArray]
+  [loading, search, data.length, longArray, query]
 );
 
   return (

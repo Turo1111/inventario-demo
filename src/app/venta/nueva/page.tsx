@@ -65,7 +65,7 @@ export default function NuevaVentaPage() {
   
   useEffect(()=>{
     dispatch(resetSale({}))
-  }, [router])
+  }, [router, dispatch])
 
   return (
     <Container>
