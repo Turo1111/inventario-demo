@@ -70,7 +70,7 @@ const Sidebar = styled.aside<{ $collapsed: boolean; $mobileOpen: boolean }>`
   z-index: 50;
   transform: ${(props) => (props.$mobileOpen ? "translateX(0)" : "translateX(-100%)")};
 
-  @media (min-width: 768px) {
+  @media (min-width: 860px) {
     position: relative;
     transform: translateX(0);
   }
@@ -230,7 +230,8 @@ const MainContent = styled.main`
   overflow: auto;
   background-color: #f8fafc;
   padding-top: 0;
-
+  flex-direction: column;
+  display: flex;
   @media (min-width: 768px) {
     padding-top: 0;
   }

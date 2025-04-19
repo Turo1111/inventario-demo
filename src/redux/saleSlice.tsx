@@ -31,9 +31,13 @@ const saleSlice = createSlice({
     },
     addItemSale: (state, action: PayloadAction<{ item: Product }>) => {
         const item = action.payload.item
+        console.log(item)
         const exist = state.itemsSale.find((elem:ItemSale)=>elem.idProducto===item._id)
         if (exist) {
            return
+        }
+        if (!item._id) {
+          return
         }
         const newItem: ItemSale = {...item, cantidad: 1, total: item.precioUnitario, idProducto: item._id, precio: item.precioUnitario}
         state.itemsSale = [...state.itemsSale, newItem]

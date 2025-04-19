@@ -100,10 +100,10 @@ const Button = styled.button<{ variant?: "primary" | "secondary" }>`
 interface NewProductModalProps {
   isOpen: boolean
   onClose: () => void
-  onSave: (product: any) => void
+  product: Product
 }
 
-const initialValues: Product = {
+/* const initialValues: Product = {
   descripcion: '',
   stock: 0,
   precioUnitario: 0,
@@ -112,15 +112,18 @@ const initialValues: Product = {
   marca: undefined,
   proveedor: undefined,
   codigoBarra: '',
+} */
+
+function initialValues(product: Product): Product {
+  return product
 }
 
-export default function NewProductModal({ isOpen, onClose, onSave }: NewProductModalProps) {
+export default function EditProduct({ isOpen, onClose, product }: NewProductModalProps) {
   
   const dispatch = useAppDispatch();
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZmJmM2Y0NWMwNjgwYTQ1NDllNWFkZSIsImlhdCI6MTc0NDU2NTMyOH0.vpFL9zk84Ds77OqFSMMXq8C6fgqXfaVfVTufmGEuYgU'
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues: initialValues(product),
     onSubmit: (formValue: Product) => {
       console.log(formValue)
       if (formValue.descripcion === '' || formValue.stock <= 0 || formValue.precioUnitario <= 0){
@@ -131,16 +134,11 @@ export default function NewProductModal({ isOpen, onClose, onSave }: NewProductM
         return
       }
       dispatch(setLoading(true))
-      apiClient.post(`/product`, formValue,
-      {
-        headers: {
-          Authorization: `Bearer ${token}` // Agregar el token en el encabezado como "Bearer {token}"
-        }
-      })
+      apiClient.patch(`/product/${product._id}`, formValue)
       .then(async (r)=>{
         dispatch(setLoading(false))
         dispatch(setAlert({
-          message: `Producto creado correctamente`,
+          message: `Producto modificado correctamente`,
           type: 'success'
         }))
         formik.resetForm()
@@ -157,12 +155,16 @@ export default function NewProductModal({ isOpen, onClose, onSave }: NewProductM
     }
   }) 
 
+  useEffect(() => {
+    formik.resetForm({ values: initialValues(product) })
+  }, [product])
+
   return (
     <ModalOverlay isOpen={isOpen} onClick={onClose}>
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         
         <ModalHeader>
-          <ModalTitle>Nuevo Producto</ModalTitle>
+          <ModalTitle>Editar Producto</ModalTitle>
           <CloseButton type="button" onClick={onClose}>
             <FaTimes />
           </CloseButton>

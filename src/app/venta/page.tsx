@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { FaSearch, FaPlus } from "react-icons/fa"
 import styled from "styled-components"
-import SaleCard from "../../components/venta/sale-card"
+import SaleCard from "../../components/venta/SaleCard"
 import Link from "next/link"
 import { Sale } from "@/interfaces/sale.interface"
 import { Types } from "mongoose"
@@ -36,7 +36,7 @@ const Header = styled.div`
 `
 
 const Title = styled.h1`
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 600;
   margin-bottom: 16px;
 `
@@ -124,6 +124,7 @@ export default function VentaPage() {
                 Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
             },
         });
+        console.log(response.data)
         setData((prevData:Sale[]) => {
 
           if (prevData.length === 0) {
@@ -165,9 +166,7 @@ export default function VentaPage() {
   },[search]) 
 
   useEffect(()=>{
-    if (process.env.NEXT_PUBLIC_TOKEN) {
-      getSale(query.skip, query.limit)
-    }
+    getSale(query.skip, query.limit)
   },[query])
 
 
@@ -177,8 +176,9 @@ export default function VentaPage() {
     }
     const socket = io(process.env.NEXT_PUBLIC_DB_HOST)
     socket.on(`sale`, (socket) => {
+      console.log(socket)
       setData((prevData:Sale[])=>{
-        return [...prevData, socket.data]
+        return [ socket.data, ...prevData ]
       })
     })
     return () => {
@@ -215,7 +215,7 @@ export default function VentaPage() {
             type="text"
             placeholder="Buscar ventas..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearch(prevData=>e.target.value)}
           />
         </SearchContainer>
 
@@ -236,7 +236,7 @@ export default function VentaPage() {
                   return  <SaleCard
                   key={index}
                   customer={item.cliente}
-                  date={item.createdAt}
+                  date={item.createdAt || 'Fecha no definida'}
                   total={item.total}
                   onPrint={() => console.log(item._id)}
                   onInfo={() => console.log(item._id)}
@@ -253,7 +253,7 @@ export default function VentaPage() {
                   return <SaleCard
                   key={index}
                   customer={item.cliente}
-                  date={item.createdAt}
+                  date={item.createdAt || 'Fecha no definida'}
                   total={item.total}
                   onPrint={() => console.log(item._id)}
                   onInfo={() => console.log(item._id)}

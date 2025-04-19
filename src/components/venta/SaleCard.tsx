@@ -43,6 +43,7 @@ const CustomerDate = styled.div`
 const PriceInfo = styled.div`
   font-weight: 700;
   font-size: 18px;
+  color: #fb923c;
 `
 
 const ActionButtons = styled.div`
@@ -122,9 +123,9 @@ export default function SaleCard({ customer, date, total, onPrint, onInfo, onEdi
         <CardContent>
           <CustomerInfo>
             <CustomerName>{customer}</CustomerName>
-            <CustomerDate>{date}</CustomerDate>
+            <CustomerDate>{date.split("T")[0] }</CustomerDate>
           </CustomerInfo>
-          <PriceInfo>{total}</PriceInfo>
+          <PriceInfo>$ {total}</PriceInfo>
         </CardContent>
 
         <ActionButtons>

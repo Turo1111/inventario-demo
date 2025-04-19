@@ -3,7 +3,6 @@ import userSlice from './userSlice'
 import loadingSlice from './loadingSlice'
 import alertSlice from './alertSlice'
 import saleSlice from './saleSlice'
-import buySlice from './buySlice'
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +10,6 @@ export const store = configureStore({
         loading: loadingSlice,
         alert: alertSlice,
         sale: saleSlice,
-        buy: buySlice,
     }
 })
 

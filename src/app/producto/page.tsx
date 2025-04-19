@@ -3,14 +3,15 @@
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react"
 import { FaSearch, FaPlus } from "react-icons/fa"
 import styled from "styled-components"
-import ProductCard from "../../components/product/product-card"
-import NewProductModal from "../../components/product/new-product-modal"
+import ProductCard from "../../components/product/ProductCard"
+import NewProductModal from "../../components/product/NewProduct"
 import { Product } from "@/interfaces/product.interface"
 import { useAppDispatch } from "@/redux/hook"
 import { getLoading, setLoading } from "@/redux/loadingSlice"
 import apiClient from "@/utils/client"
 import { io } from 'socket.io-client';
 import { useSelector } from "react-redux"
+import EditProduct from "@/components/product/EditProduct"
 
 interface CBP {
   _id: (string | number) 
@@ -40,7 +41,7 @@ const Header = styled.div`
 `
 
 const Title = styled.h1`
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 600;
   margin-bottom: 16px;
 `
@@ -117,12 +118,10 @@ export default function ProductoPage() {
   const [longArray, setLongArray] = useState<number>(0)
   const {open: loading} = useSelector(getLoading)
   const observer = useRef<IntersectionObserver | null>(null);
+  const [openEdit, setOpenEdit] = useState(false)
+  const [productSelected, setProductSelected] = useState<Product | undefined>(undefined)
 
   const dispatch = useAppDispatch();
-
-  const handleAddProduct = (product: any) => {
-    setIsModalOpen(false)
-  }
 
   const searchProduct = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(prevData=>e.target.value)
@@ -134,11 +133,11 @@ useEffect(()=>{
     dispatch(setLoading(true))
     try {
         const response = await apiClient.post(`/product/skip`, { skip, limit },
-            {
-                headers: {
-                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
-                },
-            });
+        {
+            headers: {
+                Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
+            },
+        });
         setData(prevData => {
 
             if (prevData.length === 0) {
@@ -158,12 +157,11 @@ useEffect(()=>{
     } finally {
       dispatch(setLoading(false));
     }
-}
-  if (process.env.NEXT_PUBLIC_TOKEN) {
-    getProduct(query.skip, query.limit)
   }
   
-},[dispatch, query, process.env.NEXT_PUBLIC_TOKEN]) 
+  getProduct(query.skip, query.limit)
+  
+},[dispatch, query]) 
 
 useEffect(()=>{
 
@@ -267,7 +265,14 @@ const lastElementRef = useCallback(
             dataSearch.length !== 0 ? 
               dataSearch.map((product: Product, index: number)=>{
                 console.log(product)
-                return <ProductCard key={index} name={product.descripcion} category={product.NameCategoria || 'Sin categoria'} price={product.precioUnitario} stock={product.stock} />
+                return <ProductCard key={index} name={product.descripcion} 
+                  category={product.NameCategoria || 'Sin categoria'} price={product.precioUnitario} 
+                  stock={product.stock} 
+                  onEdit={()=>{
+                    setOpenEdit(true)
+                    setProductSelected(product)
+                  }}
+                />
               })
               : 
               <div style={{ textAlign: "center", marginTop: "24px" }}>
@@ -276,7 +281,14 @@ const lastElementRef = useCallback(
           :
             data.length !== 0 ? 
             data.map((product: Product, index: number)=>{
-              return <ProductCard key={index} name={product.descripcion} category={product.NameCategoria || 'Sin categoria'} price={product.precioUnitario} stock={product.stock} />
+              return <ProductCard key={index} name={product.descripcion} 
+                category={product.NameCategoria || 'Sin categoria'} price={product.precioUnitario} 
+                stock={product.stock} 
+                onEdit={()=>{
+                  setOpenEdit(true)
+                  setProductSelected(product)
+                }}
+              />
             })
             : 
             <div style={{ textAlign: "center", marginTop: "24px" }}>
@@ -289,8 +301,12 @@ const lastElementRef = useCallback(
           <li style={{listStyle: 'none', padding: 0, margin: 0, minHeight: '1px'}} ref={lastElementRef}></li>
         }
       </ProductList>
-
-      <NewProductModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleAddProduct} />
+      
+      <NewProductModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      {
+        productSelected &&
+        <EditProduct isOpen={openEdit} onClose={()=>setOpenEdit(false)} product={productSelected} />
+      }
     </Container>
   )
 }

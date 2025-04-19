@@ -6,7 +6,7 @@ export interface Sale {
   user?: ObjectId
   cliente: string
   total: number
-  createdAt: string
+  createdAt?: string
   itemsSale: ItemSale[] | ExtendItemSale[]
   porcentaje?: number
 }
