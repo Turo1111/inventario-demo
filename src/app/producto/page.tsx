@@ -167,7 +167,6 @@ useEffect(()=>{
 
   const getProductSearch = async (input: string) => {
     dispatch(setLoading(true))
-    console.log('input', input)
     try {
         const response = await apiClient.post(`/product/search`, {input}, 
           {
@@ -224,7 +223,6 @@ const lastElementRef = useCallback(
       observer.current = new IntersectionObserver(entries => {
           if (entries[0].isIntersecting) {
               if (search === '') {
-                console.log(query)
                   if (data.length < longArray && longArray > query.limit + query.skip) {
                     setQuery(prevData => ({ skip: prevData.skip + 25, limit: prevData.limit }));
                   }
@@ -264,7 +262,6 @@ const lastElementRef = useCallback(
           search !== '' ?
             dataSearch.length !== 0 ? 
               dataSearch.map((product: Product, index: number)=>{
-                console.log(product)
                 return <ProductCard key={index} name={product.descripcion} 
                   category={product.NameCategoria || 'Sin categoria'} price={product.precioUnitario} 
                   stock={product.stock} 

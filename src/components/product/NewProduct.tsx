@@ -120,7 +120,6 @@ export default function NewProductModal({ isOpen, onClose }: NewProductModalProp
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: (formValue: Product) => {
-      console.log(formValue)
       if (formValue.descripcion === '' || formValue.stock <= 0 || formValue.precioUnitario <= 0){
         dispatch(setAlert({
           message: `Falta descripcion o stock o precio unitario o son menor a 0`,
@@ -145,7 +144,6 @@ export default function NewProductModal({ isOpen, onClose }: NewProductModalProp
         onClose()
       })
       .catch((e)=>{
-        console.log(e.response)
         dispatch(setLoading(false))
         dispatch(setAlert({
         message: `${e.response.data.error}`,

@@ -31,7 +31,10 @@ export default function Alert() {
               textAlign: 'center',
               marginTop: 50,
               zIndex: 100,
-              left: '45%'
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '90%',
+              maxWidth: '600px'
             }
         } suppressHydrationWarning={true} >
             <h2 style={{ fontWeight: "bold", color: '#fff', fontSize: 14 }}>{alert.message || 'Esto es una alerta'}</h2>

@@ -124,7 +124,6 @@ export default function VentaPage() {
                 Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
             },
         });
-        console.log(response.data)
         setData((prevData:Sale[]) => {
 
           if (prevData.length === 0) {
@@ -176,7 +175,6 @@ export default function VentaPage() {
     }
     const socket = io(process.env.NEXT_PUBLIC_DB_HOST)
     socket.on(`sale`, (socket) => {
-      console.log(socket)
       setData((prevData:Sale[])=>{
         return [ socket.data, ...prevData ]
       })
@@ -238,9 +236,9 @@ export default function VentaPage() {
                   customer={item.cliente}
                   date={item.createdAt || 'Fecha no definida'}
                   total={item.total}
-                  onPrint={() => console.log(item._id)}
-                  onInfo={() => console.log(item._id)}
-                  onEdit={() => console.log(item._id)}
+                  onPrint={() => {}}
+                  onInfo={() => {}}
+                  onEdit={() => {}}
                 />
                 })
                 :
@@ -255,9 +253,9 @@ export default function VentaPage() {
                   customer={item.cliente}
                   date={item.createdAt || 'Fecha no definida'}
                   total={item.total}
-                  onPrint={() => console.log(item._id)}
-                  onInfo={() => console.log(item._id)}
-                  onEdit={() => console.log(item._id)}
+                  onPrint={() => {} }
+                  onInfo={() => {} }
+                  onEdit={() => {} }
                 />
                 })
                   :

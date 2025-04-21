@@ -335,7 +335,7 @@ export default function Dashboard({
           <NavList>
             <NavItem
               icon={<FaHome size={18} />}
-              label="Home"
+              label="Inicio"
               $collapsed={collapsed}
               $active={pathname === "/"}
               href="/"

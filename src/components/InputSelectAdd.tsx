@@ -196,7 +196,6 @@ const InputSelectAdd = ({type = 'text', label, value, onChange, name, edit = fal
 
   useEffect(()=>{
     setLoading(true)
-    console.log(path)
     apiClient.get(`/${path}`,
     {
       headers: {

@@ -68,6 +68,9 @@ const SectionContent = styled.div`
   flex: 1;
   overflow-y: scroll;
   padding-top: 0px;
+  @media only screen and (max-width: 650px) {
+    max-height: 40vh;
+  }
 `
 
 

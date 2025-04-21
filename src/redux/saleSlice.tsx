@@ -31,7 +31,6 @@ const saleSlice = createSlice({
     },
     addItemSale: (state, action: PayloadAction<{ item: Product }>) => {
         const item = action.payload.item
-        console.log(item)
         const exist = state.itemsSale.find((elem:ItemSale)=>elem.idProducto===item._id)
         if (exist) {
            return
@@ -71,7 +70,6 @@ const saleSlice = createSlice({
     },
     upQTYSale: (state, action: PayloadAction<{ id: Types.ObjectId | string }>) => {
       const id = action.payload.id
-      console.log()
       state.itemsSale=state.itemsSale.map((elem:ItemSale)=>{
         return elem.idProducto===id ? {...elem, cantidad: elem.cantidad+1, total: parseFloat((elem.precio*(elem.cantidad+1)).toFixed(2))} : elem
       })
@@ -121,7 +119,7 @@ const saleSlice = createSlice({
   },
 });
 
-const calculateTotal = (items: ExtendItemSale[]) =>items.reduce((accumulator:number, currentValue: ItemSale) =>accumulator + currentValue.total,0)
+const calculateTotal = (items: ExtendItemSale[]) =>items.reduce((accumulator:number, currentValue: ItemSale) =>parseFloat((accumulator + currentValue.total).toFixed(2)),0)
 
 export const getSale = (state: { sale: Sale }) => state.sale
 export const getItemSale = (state: { sale: Sale }) => state.sale.itemsSale
